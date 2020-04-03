@@ -34,6 +34,8 @@ describe('DefaultAudioVideoFacade', () => {
 
     async startContentShareFromScreenCapture(_sourceId?: string): Promise<void> {}
 
+    setScreenCaptureMaxFrameRate(_frameRate: number): void {}
+
     pauseContentShare(): void {}
 
     unpauseContentShare(): void {}
@@ -513,6 +515,12 @@ describe('DefaultAudioVideoFacade', () => {
       const spy = sinon.spy(contentShareController, 'startContentShareFromScreenCapture');
       facade.startContentShareFromScreenCapture();
       expect(spy.calledOnce).to.be.true;
+    });
+
+    it('will call setScreenCaptureMaxFrameRate', () => {
+      const spy = sinon.spy(contentShareController, 'setScreenCaptureMaxFrameRate');
+      facade.setScreenCaptureMaxFrameRate(30);
+      expect(spy.calledOnceWith(30)).to.be.true;
     });
 
     it('pauseContentShare', () => {

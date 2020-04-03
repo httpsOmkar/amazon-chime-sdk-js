@@ -7,6 +7,9 @@ import Logger from '../logger/Logger';
 import MediaStreamBroker from '../mediastreambroker/MediaStreamBroker';
 
 export default class ContentShareMediaStreamBroker implements MediaStreamBroker {
+  private static defaultFrameRate = 15;
+
+  private frameRate: number = ContentShareMediaStreamBroker.defaultFrameRate;
   private _mediaStream: MediaStream;
 
   constructor(private logger: Logger) {}
@@ -52,32 +55,16 @@ export default class ContentShareMediaStreamBroker implements MediaStreamBroker 
     return navigator.mediaDevices.getDisplayMedia(streamConstraints);
   }
 
+  setScreenCaptureMaxFrameRate(frameRate: number): void {
+    this.frameRate = frameRate;
+  }
+
   bindToAudioVideoController(_audioVideoController: AudioVideoController): void {
     throw new Error('unsupported');
   }
 
   async acquireScreenCaptureDisplayInputStream(sourceId?: string): Promise<MediaStream> {
     return this.acquireDisplayInputStream(this.screenCaptureDisplayMediaConstraints(sourceId));
-  }
-
-  private screenCaptureDisplayMediaConstraints(sourceId?: string): MediaStreamConstraints {
-    return {
-      audio: false,
-      video: {
-        ...(!sourceId && {
-          frameRate: {
-            max: 3,
-          },
-        }),
-        ...(sourceId && {
-          mandatory: {
-            chromeMediaSource: 'desktop',
-            chromeMediaSourceId: sourceId,
-            maxFrameRate: 3,
-          },
-        }),
-      },
-    };
   }
 
   toggleMediaStream(enable: boolean): boolean {
@@ -100,5 +87,25 @@ export default class ContentShareMediaStreamBroker implements MediaStreamBroker 
       }
     }
     this.mediaStream = null;
+  }
+
+  private screenCaptureDisplayMediaConstraints(sourceId?: string): MediaStreamConstraints {
+    return {
+      audio: false,
+      video: {
+        ...(!sourceId && {
+          frameRate: {
+            max: this.frameRate,
+          },
+        }),
+        ...(sourceId && {
+          mandatory: {
+            chromeMediaSource: 'desktop',
+            chromeMediaSourceId: sourceId,
+            maxFrameRate: this.frameRate,
+          },
+        }),
+      },
+    };
   }
 }

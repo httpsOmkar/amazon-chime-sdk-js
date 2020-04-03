@@ -193,6 +193,12 @@ describe('DefaultContentShareController', () => {
       expect(contentShareObserverSpy.calledOnce).to.be.true;
     });
 
+    it('setScreenCaptureMaxFrameRate', () => {
+      const spy = sinon.spy(contentShareMediaStreamBroker, 'setScreenCaptureMaxFrameRate');
+      contentShareController.setScreenCaptureMaxFrameRate(30);
+      expect(spy.calledOnceWith(30)).to.be.true;
+    });
+
     it('stopContentShare', async () => {
       const audioVideoSpy = sinon.spy(audioVideoController, 'stop');
       const mediaStreamBrokerSpy = sinon.spy(contentShareMediaStreamBroker, 'cleanup');

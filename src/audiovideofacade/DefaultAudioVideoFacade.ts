@@ -372,6 +372,11 @@ export default class DefaultAudioVideoFacade implements AudioVideoFacade {
     return result;
   }
 
+  setScreenCaptureMaxFrameRate(frameRate: number): void {
+    this.contentShareController.setScreenCaptureMaxFrameRate(frameRate);
+    this.trace('setScreenCaptureMaxFrameRate');
+  }
+
   pauseContentShare(): void {
     this.contentShareController.pauseContentShare();
     this.trace('pauseContentShare');

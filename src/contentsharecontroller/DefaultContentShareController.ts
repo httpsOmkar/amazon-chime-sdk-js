@@ -61,6 +61,10 @@ export default class DefaultContentShareController
     await this.startContentShare(mediaStream);
   }
 
+  setScreenCaptureMaxFrameRate(frameRate: number): void {
+    this.mediaStreamBroker.setScreenCaptureMaxFrameRate(frameRate);
+  }
+
   pauseContentShare(): void {
     if (this.mediaStreamBroker.toggleMediaStream(false)) {
       this.forEachContentShareObserver(observer => {

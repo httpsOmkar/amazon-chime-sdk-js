@@ -15,6 +15,11 @@ export default interface ContentShareControllerFacade {
   startContentShareFromScreenCapture(sourceId?: string): Promise<void>;
 
   /**
+   * Set the max frame rate for screen capture. By default, the max frame rate is 15.
+   */
+  setScreenCaptureMaxFrameRate(frameRate: number): void;
+
+  /**
    * Pause content sharing
    */
   pauseContentShare(): void;
